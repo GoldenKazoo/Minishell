@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+/* env builtin (print all the variables that are in the env) */
 int	ft_print_env(char **env)
 {
 	int	i;
@@ -14,7 +15,7 @@ int	ft_print_env(char **env)
 	}
 	return (0);
 }
-
+/*
 int main (__attribute__ ((unused)) int argc, __attribute__ ((unused)) char **argv, char **envp)
 {
 	if (ft_print_env(envp))
@@ -24,3 +25,4 @@ int main (__attribute__ ((unused)) int argc, __attribute__ ((unused)) char **arg
 	}
 	return (0);
 }
+*/
