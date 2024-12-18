@@ -17,7 +17,7 @@ int	ft_echo(char *str)
 	printf("%c", '\n');
 	return (0);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	if (argc > 2)
@@ -28,3 +28,4 @@ int	main(int argc, char **argv)
 	ft_echo(argv[1]);
 	return (0);
 }
+*/
