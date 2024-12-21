@@ -17,28 +17,17 @@ size_t ft_count_space(char *prompt)
             {
                 count = count + 2;
             }
-            if (prompt[i] == '<')
+            if (prompt[i] == '<' && prompt[i-1] != ' ' && prompt[i+1] != ' ')
             {
-                if (prompt[i-1] != ' ' && prompt[i+1] != ' ' && prompt[i+1] != '<')
-                {
-                    count = count + 2;
-                }
+                count = count + 2;
                 if (prompt[i+1] == '<')
-                {
-                    count = count + 2;
                     i++;
-                }
             }
-            if (prompt[i] == '>')
+            if (prompt[i] == '>' && prompt[i-1] != ' ' && prompt[i+1] != ' ')
             {
-                if (prompt[i-1] != ' ' && prompt[i+1] != ' ' && prompt[i+1] != '>')
-                {
-                    count = count + 2;
-                }
+                count = count + 2;
                 if (prompt[i+1] == '>')
-                {
                     i++;
-                }
             }
         }
         i++;
@@ -46,76 +35,110 @@ size_t ft_count_space(char *prompt)
     return (count);
 }
 
+int ft_pipe_case(char *prompt, char *new_prompt, int *i, int *j, int state)
+{
+    if (!prompt || !new_prompt || !i || !j)
+        return (0);
+    if (prompt[*j + 1] == '|')
+    {
+        state = 1;
+        new_prompt[*i] = prompt[*j];
+        (*i)++;
+        new_prompt[*i] = ' ';
+        (*i)++;
+        new_prompt[*i] = '|';
+        (*i)++;
+        new_prompt[*i] = ' ';
+        (*j)++;
+    }
+    return (state);
+}
+
+int   ft_right_redir_case(char *prompt, char *new_prompt, int *i, int *j, int state)
+{
+    if (!prompt || !new_prompt || !i || !j)
+        return (0);
+    if (prompt[*j + 1] == '<')
+    {
+        state = 1;
+        new_prompt[*i] = prompt[*j];
+        (*i)++;
+        new_prompt[*i] = ' ';
+        (*i)++;
+        new_prompt[*i] = '<';
+        (*j)++;
+        if (prompt[*j+1] && prompt[*j+1] == '<')
+        {
+            (*i)++;
+            new_prompt[*i] = '<';
+            (*i)++;
+            new_prompt[*i] = ' ';
+            (*j)++;
+        }
+        else
+        {
+            (*i)++;
+            new_prompt[*i] = ' ';
+        }
+    }
+    return (state);
+}
+
+int    ft_left_redir_case(char *prompt, char *new_prompt, int *i, int *j, int state)
+{
+    if (!prompt || !new_prompt || !i || !j)
+        return (0);
+    if (prompt[*j + 1] == '>')
+    {
+        state = 1;
+        new_prompt[*i] = prompt[*j];
+        (*i)++;
+        new_prompt[*i] = ' ';
+        (*i)++;
+        new_prompt[*i] = '>';
+        (*j)++;
+        if (prompt[*j+1] && prompt[*j+1] == '>')
+        {
+            (*i)++;
+            new_prompt[*i] = '>';
+            (*i)++;
+            new_prompt[*i] = ' ';
+            (*j)++;
+        }
+        else
+        {
+            (*i)++;
+            new_prompt[*i] = ' ';
+        }
+    }
+    return (state);
+}
 char  *ft_insert_space(char *prompt)
 {
     int i;
     int j;
+    int state;
+    char check1;
+    char check2;
+    char check3;
     char *new_prompt;
 
     i = 0;
     j = 0;
-    new_prompt = malloc(strlen(prompt) + ft_count_space(prompt));
+    new_prompt = malloc(strlen(prompt) + ft_count_space(prompt) + 10);
     while(prompt[j]!='\0')
     {
-        if (prompt[j + 1] == '|')
-        {
-            new_prompt[i] = prompt[j];
-            i++;
-            new_prompt[i] = ' ';
-            i++;
-            new_prompt[i] = '|';
-            i++;
-            new_prompt[i] = ' ';
-            j++;
-        }
-        else if (prompt[j + 1] == '<')
-        {
-            new_prompt[i] = prompt[j];
-            i++;
-            new_prompt[i] = ' ';
-            i++;
-            new_prompt[i] = '<';
-            j++;
-            if (prompt[j] && prompt[j] == '<')
-            {
-                i++;
-                new_prompt[i] = '<';
-                i++;
-                new_prompt[i] = ' ';
-                j++;
-            }
-            else
-            {
-                i++;
-                new_prompt[i] = ' ';
-            }
-        }
-        else if (prompt[j + 1] == '>')
-        {
-            new_prompt[i] = prompt[j];
-            i++;
-            new_prompt[i] = ' ';
-            i++;
-            new_prompt[i] = '>';
-            j++;
-            if (prompt[j] && prompt[j + 1] == '>')
-            {
-                i++;
-                new_prompt[i] = '>';
-                i++;
-                new_prompt[i] = ' ';
-                j++;
-            }
-            else
-            {
-                i++;
-                new_prompt[i] = ' ';
-            }
-        }
-        else
+        check1 = prompt[j];
+        check3 = new_prompt[i];
+        state = 0;
+        state = ft_pipe_case(prompt, new_prompt, &i, &j, state);
+        state = ft_right_redir_case(prompt, new_prompt, &i, &j, state);
+        state = ft_left_redir_case(prompt, new_prompt, &i, &j, state);
+        if (state == 0)
         {
             new_prompt[i] = prompt[j];
         }
+        check3 = new_prompt[i];
         i++;
         j++;
     }
@@ -125,9 +148,9 @@ char  *ft_insert_space(char *prompt)
 
 // int main()
 // {
-//     char *test = "echo '$aled'|cat grep l<<";
+//     char *test = "l<outgile";
+//     printf("%zu\n", ft_count_space(test));
 //     char *new_test = ft_insert_space(test);
 
-//     printf("%s\n", test);
 //     printf("%s", new_test);
 // }
