@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:38:58 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 18:27:36 by zchagar          ###   ########.fr       */
+/*   Updated: 2024/12/21 18:39:39 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ int	ft_left_redir_case(char *prompt, char *new_prompt, int *index, int state)
 		state = 1;
 		new_prompt[index[0]++] = prompt[index[1]];
 		new_prompt[index[0]++] = ' ';
-		new_prompt[index[0]++] = '>';
+		new_prompt[index[0]] = '>';
 		(index[1])++;
 		if (prompt[index[1] + 1] && prompt[index[1] + 1] == '>')
 		{
 			index[0]++;
 			new_prompt[index[0]++] = '>';
-			new_prompt[index[0]] = ' ';
+			new_prompt[index[0]++] = ' ';
 			(index[1])++;
 		}
 		else
