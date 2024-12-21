@@ -6,12 +6,61 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 10:39:00 by zchagar           #+#    #+#             */
-/*   Updated: 2024/06/11 10:30:57 by zchagar          ###   ########.fr       */
+/*   Updated: 2024/12/21 19:23:02 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
+
+char	*ft_strdup(const char *src)
+{
+	char	*p;
+	int		i;
+
+	i = 0;
+	p = malloc(sizeof(char) * strlen(src) + 1);
+	if (!p)
+	{
+		return (NULL);
+	}
+	while (src[i] != '\0')
+	{
+		p[i] = src[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		i;
+	int		k;
+	char	*p;
+
+	i = 0;
+	k = 0;
+	if (!s1 && s2)
+		return (ft_strdup(s2));
+	if (s1 && !s2)
+		return (ft_strdup(s1));
+	if (!s1 && !s2)
+		return (NULL);
+	p = malloc(sizeof(char) * (strlen(s1) + strlen(s2)) + 1);
+	if (!p)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	while (s2[k] != '\0')
+		p[i++] = s2[k++];
+	p[i] = '\0';
+	return (p);
+}
 
 void	ft_bzero(void *s, size_t n)
 {

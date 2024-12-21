@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 18:45:31 by zchagar          ###   ########.fr       */
+/*   Updated: 2024/12/21 19:51:27 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,26 @@ typedef struct s_list
 	struct s_list	*next_token;
 }	t_list;
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	int		i;
+	int		check;
 	char	*input;
 	char	*new_input;
 	char	**splited;
+	char	**paths;
 
 	i = 0;
 	input = readline("Entrez quelque chose: ");
 	new_input = ft_insert_space(input);
 	splited = ft_split(new_input, ' ');
+	paths = ft_path_split(envp);
 	while (splited[i])
 	{
-		printf("%s\n", splited[i]);
+		check = ft_check_identity(splited[i], paths);
+		printf("%s : %i\n", splited[i], check);
 		i++;
 	}
 }
+
+//Todo : Fix l'identification (par ex > donne 1)
