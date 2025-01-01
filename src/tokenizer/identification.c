@@ -17,14 +17,14 @@ int	ft_is_command(char **path, char *string)
 	char *checker;
 	
 	checker = ft_get_path_cmd(path, string);
-	if (checker == NULL)
+	if (checker != NULL)
 		return (CMD);
 	return (0);
 }
 
 int	ft_is_pipe(char *string)
 {
-	if (strncmp(string, "|", 2) == 0)
+	if (strncmp(string, "|", 1) == 0)
 		return (PIPE);
 	return (0);
 }
@@ -43,5 +43,5 @@ int	ft_check_identity(char *string, char **path)
 		return (APPEND);
 	if (ft_is_command(path, string) == CMD)
 		return (CMD);
-	return (0);
+	return (ARG);
 }
