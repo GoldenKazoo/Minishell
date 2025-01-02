@@ -90,7 +90,6 @@ void ft_print_token_list(t_list *token_list)
     {
         printf("%i\n", token_list->token_type);
         token_list = token_list->next_token;
-        sleep(1);
     }
 }
 
