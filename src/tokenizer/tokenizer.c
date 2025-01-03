@@ -99,7 +99,7 @@ void ft_check_integrity(t_list *token_list, int list_size)
         token_list->token_type == STDOUT || token_list->token_type == HEREDOC || token_list->token_type == APPEND))
     {
         printf("Syntax error");
-        exit(1);
+        return ;
     }
 
     while (token_list)
