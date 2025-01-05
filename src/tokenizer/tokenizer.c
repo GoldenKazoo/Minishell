@@ -93,15 +93,44 @@ void ft_print_token_list(t_list *token_list)
     }
 }
 
-void ft_check_integrity(t_list *token_list, int list_size)
+int     ft_count_redir(t_list token_list)
+{
+    int redir;
+
+    redir = 0;
+    while(token_list)
+    {
+        if (token_list->token_type == STDIN ||token_list->token_type == STDOUT || token_list->token_type == HEREDOC || token_list->token_type == STDOUT)
+        {
+            redir++;
+        }
+        token_list = token_list->next_token; 
+    }
+    return (redir);
+}
+
+void    ft_error_tokenizer(t_list token_list)
 {
     if (list_size == 1 && (token_list->token_type == PIPE || token_list->token_type == STDIN || 
         token_list->token_type == STDOUT || token_list->token_type == HEREDOC || token_list->token_type == APPEND))
     {
-        printf("Syntax error");
+        printf("Syntax error : parse error near '\n'");
         return ;
     }
-
+    if (ft_count_redir(token_list) == 0 && token_list->token_type != CMD)
+    {
+        printf("Syntax error : command not found");
+    }
+    while (token_list)
+    {
+        if (token_list->token_type == PIPE && (token_list->next_token->token_type == ARG || token_list->next_token->token_type == PIPE))
+        {
+            printf("Syntax error : command not found after PIPE")
+        }
+    }
+}
+void    ft_check_integrity(t_list *token_list, int list_size)
+{
     while (token_list)
     {
         if (token_list->token_type == CMD)
@@ -115,7 +144,7 @@ void ft_check_integrity(t_list *token_list, int list_size)
         }
         if (token_list)
             token_list = token_list->next_token;
-    }
+        }
 }
 
 int main(int argc, char **argv, char **envp)
