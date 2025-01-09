@@ -6,7 +6,7 @@
 /*   By: zak <zak@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 11:03:32 by zak               #+#    #+#             */
-/*   Updated: 2025/01/08 11:41:19 by zak              ###   ########.fr       */
+/*   Updated: 2025/01/08 22:12:30 by zak              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ int main()
     char *test2 = "echo \"Hello world";
     char *test3 = "echo 'It's a test'";
     char *test4 = "echo \"Test 'imbriqued' quote\"";
+    char *test5 = "echo \"Test 'imbriqued\" quote\''";
 
     ft_print_status(ft_validate_all_quotes(test1)); // Syntax OK
     ft_print_status(ft_validate_all_quotes(test2)); // Syntax Error
     ft_print_status(ft_validate_all_quotes(test3)); // Syntax Error
     ft_print_status(ft_validate_all_quotes(test4)); // Syntax OK
-
+    ft_print_status(ft_validate_all_quotes(test5)); // Syntax Error
     return (0);
 }

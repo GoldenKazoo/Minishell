@@ -1,4 +1,4 @@
-total 64
+total 68
 -rwxr-xr-x 1 zak zak 22032 Jan  8 22:25 a.out
 -rw-r--r-- 1 zak zak  1396 Jan  8 11:51 commands_utils.c
 -rw-r--r-- 1 zak zak  1818 Jan  8 11:51 count_space.c
@@ -6,7 +6,8 @@ total 64
 -rw-r--r-- 1 zak zak  1592 Jan  8 11:51 identification.c
 -rw-r--r-- 1 zak zak  1346 Jan  8 11:51 identification_aux.c
 -rw-r--r-- 1 zak zak  3324 Jan  8 11:51 insert_space.c
--rw-r--r-- 1 zak zak     0 Jan  8 22:32 outfile
+-rw-r--r-- 1 zak zak   589 Jan  8 22:32 outfile
 -rw-r--r-- 1 zak zak  1169 Jan  8 22:13 path.c
+-rw-r--r-- 1 zak zak     0 Jan  8 22:34 test
 -rw-r--r-- 1 zak zak  4734 Jan  8 22:25 tokenizer.c
 -rw-r--r-- 1 zak zak  1778 Jan  8 22:13 tokenizer.h

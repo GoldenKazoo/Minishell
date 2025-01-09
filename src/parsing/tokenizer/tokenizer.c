@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zak <zak@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 19:51:27 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/08 22:25:06 by zak              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void ft_tokenize(t_list **token_list, char **splited, char **paths)
         token->token_type = ft_check_identity(splited[i], paths);
         token->litteral = 0;
         token->closed = 0;
-        token->token = splited[i];
+        token->token = splited[i]; //ici gerer quote concat
         token->next_token = NULL;
         token->previous_token = NULL;
         if (!(*token_list))
@@ -88,12 +88,12 @@ void ft_print_token_list(t_list *token_list)
 {
    while (token_list)
     {
-        printf("%i\n", token_list->token_type);
+        printf("%s : %i\n", token_list->token, token_list->token_type);
         token_list = token_list->next_token;
     }
 }
 
-int     ft_count_redir(t_list token_list)
+int     ft_count_redir(t_list *token_list)
 {
     int redir;
 
@@ -109,9 +109,9 @@ int     ft_count_redir(t_list token_list)
     return (redir);
 }
 
-void    ft_error_tokenizer(t_list token_list)
+void    ft_error_tokenizer(t_list *token_list, int size)
 {
-    if (list_size == 1 && (token_list->token_type == PIPE || token_list->token_type == STDIN || 
+    if (size == 1 && (token_list->token_type == PIPE || token_list->token_type == STDIN || 
         token_list->token_type == STDOUT || token_list->token_type == HEREDOC || token_list->token_type == APPEND))
     {
         printf("Syntax error : parse error near '\n'");
@@ -125,7 +125,7 @@ void    ft_error_tokenizer(t_list token_list)
     {
         if (token_list->token_type == PIPE && (token_list->next_token->token_type == ARG || token_list->next_token->token_type == PIPE))
         {
-            printf("Syntax error : command not found after PIPE")
+            printf("Syntax error : command not found after PIPE");
         }
     }
 }
