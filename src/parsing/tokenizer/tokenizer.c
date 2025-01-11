@@ -147,6 +147,10 @@ void    ft_check_integrity(t_list *token_list, int list_size)
         }
 }
 
+void ft_free_list(t_list *token_list)
+{
+    free(token_list);
+}
 int main(int argc, char **argv, char **envp)
 {
     char    *input;
@@ -154,16 +158,22 @@ int main(int argc, char **argv, char **envp)
     char    *new_input;
     char    **splited;
     char    **paths;
-    t_list  *token_list = NULL;
 
-    input = readline("Entrez du texte : ");
-    new_input = ft_insert_space(input);
-    splited = ft_split(new_input, ' ');
-    paths = ft_path_split(envp);
-	size = ft_get_size_list(splited);
-    ft_tokenize(&token_list, splited, paths);
-	ft_check_integrity(token_list, size);
-	ft_print_token_list(token_list);
+    while (1)
+    {
+        t_list  *token_list = NULL;
+        input = readline("[Minishell]$ ");
+        if (strncmp(input, "kill", 4) == 0)
+            return (0);
+        new_input = ft_insert_space(input);
+        splited = ft_split(new_input, ' ');
+        paths = ft_path_split(envp);
+        size = ft_get_size_list(splited);
+        ft_tokenize(&token_list, splited, paths);
+        ft_check_integrity(token_list, size);
+        ft_print_token_list(token_list);
+        ft_free_list(token_list);
+    }
     return (0);
 }
 
