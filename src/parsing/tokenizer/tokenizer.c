@@ -6,7 +6,7 @@
 /*   By: zak <zak@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/08 22:25:06 by zak              ###   ########.fr       */
+/*   Updated: 2025/01/14 18:26:22 by zak              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ t_list	*find_last(t_list *token_list)
 	return (token_list);
 }
 
+boolean ft_is_litteral(char *string)
+{
+    if(string[0] == '\'')
+        return (true);
+    return (false);
+}
+
 int	ft_get_size_list(char **splited)
 {
 	int size;
@@ -51,6 +58,7 @@ int	ft_get_size_list(char **splited)
 	return (size);
 }
 
+b
 void ft_tokenize(t_list **token_list, char **splited, char **paths)
 {
     int     i;
