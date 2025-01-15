@@ -6,7 +6,7 @@
 /*   By: zak <zak@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/14 18:26:22 by zak              ###   ########.fr       */
+/*   Updated: 2025/01/15 22:07:43 by zak              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void ft_tokenize(t_list **token_list, char **splited, char **paths)
         token->token_type = ft_check_identity(splited[i], paths);
         token->litteral = 0;
         token->closed = 0;
-        token->token = splited[i]; //ici gerer quote concat
+        token->token = splited[i]; //ici gerer quote concat si present in string
         token->next_token = NULL;
         token->previous_token = NULL;
         if (!(*token_list))
