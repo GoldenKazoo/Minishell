@@ -36,7 +36,7 @@ t_list	*find_last(t_list *token_list)
 	return (token_list);
 }
 
-boolean ft_is_litteral(char *string)
+bool ft_is_litteral(char *string)
 {
     if(string[0] == '\'')
         return (true);
@@ -58,7 +58,7 @@ int	ft_get_size_list(char **splited)
 	return (size);
 }
 
-b
+
 void ft_tokenize(t_list **token_list, char **splited, char **paths)
 {
     int     i;

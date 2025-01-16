@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <string.h>
+# include <stdbool.h>
 
 # define CMD		1	//"foo"
 # define ARG		2	//"bar"
