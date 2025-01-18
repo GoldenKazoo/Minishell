@@ -159,6 +159,7 @@ void ft_free_list(t_list *token_list)
 {
     free(token_list);
 }
+
 int main(int argc, char **argv, char **envp)
 {
     char    *input;
@@ -184,6 +185,3 @@ int main(int argc, char **argv, char **envp)
     }
     return (0);
 }
-
-
-//Todo : Fix l'identification (par ex > donne 1)
