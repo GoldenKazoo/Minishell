@@ -58,7 +58,6 @@ int	ft_get_size_list(char **splited)
 	return (size);
 }
 
-
 void ft_tokenize(t_list **token_list, char **splited, char **paths)
 {
     int     i;
@@ -91,6 +90,64 @@ void ft_tokenize(t_list **token_list, char **splited, char **paths)
         i++;
     }
 }
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void ft_append_quote(t_list **token_list)
+{
+    t_list *current = *token_list;
+    t_list *next;
+    char *merged_token;
+    int in_quotes;
+    char quote_char;
+
+    while (current)
+    {
+        char *token = current->token;
+
+        if (strchr(token, '\'') || strchr(token, '"'))
+        {
+            if (token[0] == '\'' || token[0] == '"')
+                quote_char = token[0];
+            else
+                quote_char = 0;
+
+            in_quotes = quote_char ? 1 : 0;
+            merged_token = strdup(token);
+
+            next = current->next_token;
+            while (in_quotes && next)
+            {
+                merged_token = realloc(merged_token, strlen(merged_token) + strlen(next->token) + 2);
+                strcat(merged_token, " ");
+                strcat(merged_token, next->token);
+                if (strchr(next->token, quote_char))
+                    in_quotes = 0;
+
+                next = next->next_token;
+            }
+            if (in_quotes)
+            {
+                printf("Syntax error: unclosed quote.\n");
+                free(merged_token);
+                return;
+            }
+            current->token = merged_token;
+            current->next_token = next;
+            t_list *tmp = current->next_token;
+            while (tmp && tmp != next)
+            {
+                t_list *to_free = tmp;
+                tmp = tmp->next_token;
+                free(to_free);
+            }
+        }
+        current = current->next_token;
+    }
+}
+
 
 void ft_print_token_list(t_list *token_list)
 {
@@ -180,6 +237,7 @@ int main(int argc, char **argv, char **envp)
         size = ft_get_size_list(splited);
         ft_tokenize(&token_list, splited, paths);
         ft_check_integrity(token_list, size);
+        ft_append_quote(&token_list);
         ft_print_token_list(token_list);
         ft_free_list(token_list);
     }
