@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:17:37 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 16:46:42 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:26:34 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_list	*find_last(t_list *token_list)
 
 int	ft_get_size_list(char **splited)
 {
-	int size;
+	int	size;
 	int	i;
 
 	i = 0;
@@ -36,17 +36,17 @@ int	ft_get_size_list(char **splited)
 	return (size);
 }
 
-void ft_free_list(t_list *token_list)
+void	ft_free_list(t_list *token_list)
 {
 	free(token_list);
 }
 
-void ft_print_token_list(t_list *token_list)
+void	ft_print_token_list(t_list *token_list)
 {
-   while (token_list)
+	while (token_list)
 	{
 		if (ft_is_litteral(token_list->token) == true)
-			token_list-> token = ft_replace_litteral(token_list->token);
+			token_list->token = ft_replace_litteral(token_list->token);
 		printf("%s : %i\n", token_list->token, token_list->token_type);
 		token_list = token_list->next_token;
 	}

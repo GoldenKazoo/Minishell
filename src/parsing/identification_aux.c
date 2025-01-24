@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:40:45 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 19:42:11 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:21:59 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	ft_is_redirect_stdout(char *string)
 	return (0);
 }
 
-int	ft_is_HEREDOC(char *string)
+int	ft_is_heredoc(char *string)
 {
 	if (strncmp(string, "<<", 2) == 0)
 		return (HEREDOC);
 	return (0);
 }
 
-int	ft_is_APPEND(char *string)
+int	ft_is_append(char *string)
 {
 	if (strncmp(string, ">>", 2) == 0)
 		return (APPEND);

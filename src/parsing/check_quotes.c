@@ -6,41 +6,44 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 11:03:32 by zak               #+#    #+#             */
-/*   Updated: 2025/01/24 16:50:01 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:20:46 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-bool ft_check_quotes(char *str, char quote)
+bool	ft_check_quotes(char *str, char quote)
 {
-    bool open;
-    int i;
+	bool	open;
+	int		i;
 
-    open = false;
-    i = 0;
-    while (str[i] != '\0')
-    {
-        if (str[i] == quote)
-            open = !open;
-        i++;
-    }
-    return (!open);
+	open = false;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == quote)
+			open = !open;
+		i++;
+	}
+	return (!open);
 }
 
-bool ft_validate_all_quotes(char *str)
+bool	ft_validate_all_quotes(char *str)
 {
-    bool valid_single = ft_check_quotes(str, '\'');
-    bool valid_double = ft_check_quotes(str, '"');
-    return (valid_single && valid_double);
+	bool	valid_single;
+	bool	valid_double;
+
+	valid_single = ft_check_quotes(str, '\'');
+	valid_double = ft_check_quotes(str, '"');
+	return (valid_single && valid_double);
 }
 
-void ft_print_status(bool status)
+void	ft_print_status(bool status)
 {
-    if (status)
-        printf("Syntax OK\n");
-    else
-        printf("Syntax Error: Unmatched quote\n");
+	if (status)
+		printf("Syntax OK\n");
+	else
+		printf("Syntax Error: Unmatched quote\n");
 }
 
 // int main()

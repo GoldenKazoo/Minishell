@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:31:46 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 19:48:23 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/24 17:22:47 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_is_command(char **path, char *string)
 {
-	char *checker;
-	
+	char	*checker;
+
 	checker = ft_get_path_cmd(path, string);
 	if (checker != NULL)
 		return (CMD);
@@ -37,9 +37,9 @@ int	ft_check_identity(char *string, char **path)
 		return (STDIN);
 	if (ft_is_redirect_stdin(string) == STDOUT)
 		return (STDOUT);
-	if (ft_is_HEREDOC(string) == HEREDOC)
+	if (ft_is_heredoc(string) == HEREDOC)
 		return (HEREDOC);
-	if (ft_is_APPEND(string) == APPEND)
+	if (ft_is_append(string) == APPEND)
 		return (APPEND);
 	if (ft_is_command(path, string) == CMD)
 		return (CMD);
