@@ -14,13 +14,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "tokenizer.h"
 
 typedef struct s_list
 {
 	char			*prompt;
 	int				token_type;
-	int				litteral;
+	bool			litteral;
 	int				closed;
 	char			*token;
 	struct s_list	*previous_token;
@@ -38,10 +39,92 @@ t_list	*find_last(t_list *token_list)
 
 bool ft_is_litteral(char *string)
 {
-    if(string[0] == '\'')
+    if(string[0] == '"')
         return (true);
     return (false);
 }
+
+int ft_count_dollar(char *string)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (string[i])
+    {
+        if (string[i] == '$')
+            count++;
+        i++;
+    }
+    return (count);
+}
+
+bool ft_valid_format(char c)
+{
+    if (c <= 'Z' && c >= 'A')
+        return (true);
+    if (c <= 'z' && c >= 'a')
+        return (true);
+    if (c <= '9' && c >= '0')
+        return (true);
+    if (c == '_')
+        return (true);
+    return (false);
+}
+char *ft_insert_for_litteral(char *string)
+{
+    int     i;
+    int     j;
+    char    *new_string = NULL;
+    i = 1;
+    j = 0;
+    new_string = malloc(strlen(string) + ft_count_dollar(string) + 1);
+    while (string[i] && string[i] != '"')
+    {
+        
+        if (ft_valid_format(string[i]) == false && string[i]!= '"')
+        {
+            new_string[j] = '|';
+            j++;
+        }
+        if (string[i] != '"')
+            new_string[j] = string[i];
+        i++;
+        j++;
+    }
+    return (new_string);
+}
+
+char *ft_replace_litteral(char *string)
+{
+    char **split_str;
+    char *new_string = NULL;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    string = ft_insert_for_litteral(string);
+    split_str = ft_split(string, '|');
+    while (split_str[i])
+    {
+        if (split_str[i][0] == '$')
+        {
+            split_str[i] = getenv(++split_str[i]);
+        }
+        i++;
+        j = 0;
+    }
+    i = 0;
+    while (split_str[i])
+    {
+        new_string = ft_strjoin(new_string, split_str[i]);
+        i++;
+    }
+    return(new_string);
+}
+
 
 int	ft_get_size_list(char **splited)
 {
@@ -72,9 +155,9 @@ void ft_tokenize(t_list **token_list, char **splited, char **paths)
             return ;
         token->prompt = NULL;
         token->token_type = ft_check_identity(splited[i], paths);
-        token->litteral = 0;
         token->closed = 0;
-        token->token = splited[i]; //ici gerer quote concat si present in string
+        token->token = splited[i];
+        token->litteral = ft_is_litteral(splited[i]);
         token->next_token = NULL;
         token->previous_token = NULL;
         if (!(*token_list))
@@ -91,68 +174,12 @@ void ft_tokenize(t_list **token_list, char **splited, char **paths)
     }
 }
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-void ft_append_quote(t_list **token_list)
-{
-    t_list *current = *token_list;
-    t_list *next;
-    char *merged_token;
-    int in_quotes;
-    char quote_char;
-
-    while (current)
-    {
-        char *token = current->token;
-
-        if (strchr(token, '\'') || strchr(token, '"'))
-        {
-            if (token[0] == '\'' || token[0] == '"')
-                quote_char = token[0];
-            else
-                quote_char = 0;
-
-            in_quotes = quote_char ? 1 : 0;
-            merged_token = strdup(token);
-
-            next = current->next_token;
-            while (in_quotes && next)
-            {
-                merged_token = realloc(merged_token, strlen(merged_token) + strlen(next->token) + 2);
-                strcat(merged_token, " ");
-                strcat(merged_token, next->token);
-                if (strchr(next->token, quote_char))
-                    in_quotes = 0;
-
-                next = next->next_token;
-            }
-            if (in_quotes)
-            {
-                printf("Syntax error: unclosed quote.\n");
-                free(merged_token);
-                return;
-            }
-            current->token = merged_token;
-            current->next_token = next;
-            t_list *tmp = current->next_token;
-            while (tmp && tmp != next)
-            {
-                t_list *to_free = tmp;
-                tmp = tmp->next_token;
-                free(to_free);
-            }
-        }
-        current = current->next_token;
-    }
-}
-
-
 void ft_print_token_list(t_list *token_list)
 {
    while (token_list)
     {
+        if (ft_is_litteral(token_list->token) == true)
+            token_list-> token = ft_replace_litteral(token_list->token);
         printf("%s : %i\n", token_list->token, token_list->token_type);
         token_list = token_list->next_token;
     }
@@ -217,6 +244,47 @@ void ft_free_list(t_list *token_list)
     free(token_list);
 }
 
+void ft_save_space_before(char *input)
+{
+    int i;
+
+    i = 0;
+    while (input[i] != '\0')
+    {
+        if (input[i] == '"')
+        {
+            i++;
+            while (input[i] != '"')
+            {
+                if (input[i] == ' ')
+                    input[i] = -42;
+                i++;
+            }
+        }
+        i++;
+    }
+}
+
+void ft_save_space_after(char **splited)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (splited[i])
+    {
+        while (splited[i][j] != '\0')
+        {
+            if (splited[i][j] == -42)
+                splited[i][j] = ' ';
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
+
 int main(int argc, char **argv, char **envp)
 {
     char    *input;
@@ -229,15 +297,18 @@ int main(int argc, char **argv, char **envp)
     {
         t_list  *token_list = NULL;
         input = readline("[Minishell]$ ");
+        // input = "echo \'Hello        $USER\'";
         if (strncmp(input, "kill", 4) == 0)
             return (0);
-        new_input = ft_insert_space(input);
+        new_input = strdup(input);
+        ft_save_space_before(new_input);
+        new_input = ft_insert_space(new_input);
         splited = ft_split(new_input, ' ');
+        ft_save_space_after(splited);
         paths = ft_path_split(envp);
         size = ft_get_size_list(splited);
         ft_tokenize(&token_list, splited, paths);
         ft_check_integrity(token_list, size);
-        ft_append_quote(&token_list);
         ft_print_token_list(token_list);
         ft_free_list(token_list);
     }
