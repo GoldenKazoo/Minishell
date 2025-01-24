@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 10:39:00 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 19:23:02 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/24 16:20:33 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,18 +186,3 @@ char	**ft_split(char const *s, char c)
 	}
 	return (p);
 }
-
-/*int main()
-{
-	char **p;
-
-	p = ft_split("hello!zzzzzzzz",'z');
-
-	for (int i = 0; i <= 2; i++)
-	{
-		printf("%s\n", p[i]);
-		free(p[i]);
-	}
-	free(p);
-}
-*/
