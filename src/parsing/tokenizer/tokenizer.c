@@ -109,7 +109,7 @@ char *ft_replace_litteral(char *string)
     split_str = ft_split(string, '|');
     while (split_str[i])
     {
-        if (split_str[i][0] == '$')
+        if (split_str[i][0] == '$' && ft_valid_format(split_str[i][1]))
         {
             split_str[i] = getenv(++split_str[i]);
         }
@@ -303,23 +303,17 @@ int main(int argc, char **argv, char **envp)
     char    **splited;
     char    **paths;
 
-    // while (1)
-    // {
+    while (1)
+    {
         t_list  *token_list = NULL;
-        // input = readline("[Minishell]$ ");
-        input = "echo \"Hello        $USER\" 'Oui'";
+        input = readline("[Minishell]$ ");
+        // input = "echo \"Hello        $USER\" 'Oui'";
         if (strncmp(input, "kill", 4) == 0)
             return (0);
         new_input = strdup(input);
         ft_save_space_before(new_input);
         new_input = ft_insert_space(new_input);
         splited = ft_split(new_input, ' ');
-        // int i = 0;
-        // while (splited[i])
-        // {
-        //     printf("%s\n", splited[i]);
-        //     i++;
-        // }
         ft_save_space_after(splited);
         paths = ft_path_split(envp);
         size = ft_get_size_list(splited);
@@ -327,6 +321,6 @@ int main(int argc, char **argv, char **envp)
         ft_check_integrity(token_list, size);
         ft_print_token_list(token_list);
         ft_free_list(token_list);
-    // }
+    }
     return (0);
 }
