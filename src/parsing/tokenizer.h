@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:27:59 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 13:39:18 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:33:06 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 
 typedef struct s_list
 {
-	char			*prompt;
 	int				token_type;
 	bool			litteral;
 	int				closed;
@@ -65,4 +64,6 @@ void ft_free_list(t_list *token_list);
 bool	ft_contain_quotes(char *str);
 char *ft_convert_into_double_quote(char *str);
 bool	ft_validate_all_quotes(char *str);
+char	*ft_strdup(const char *src);
+void ft_free_split(char **array);
 #endif

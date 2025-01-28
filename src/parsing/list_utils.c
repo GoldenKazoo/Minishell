@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:17:37 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 11:16:41 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:03:19 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,14 @@ int	ft_get_size_list(char **splited)
 	return (size);
 }
 
-void	ft_free_list(t_list *token_list)
+void ft_free_list(t_list *list)
 {
-	free(token_list);
+    while (list)
+    {
+        t_list *next = list->next_token;
+        free(list);
+        list = next;
+    }
 }
 
 void	ft_print_token_list(t_list *token_list)

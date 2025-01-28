@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:18:05 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:27:19 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:37:38 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	ft_save_space_before(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i] && input[i] != '\0')
+	while (input[i] != '\0')
 	{
 		if (input[i] == '"')
 		{
@@ -121,7 +121,7 @@ void	ft_save_space_before(char *input)
 				i++;
 			}
 		}
-		if (input[i] == '\'')
+		else if (input[i] == '\'')
 		{
 			i++;
 			while (input[i] != '\'' && input[i] != '\0')
@@ -131,9 +131,11 @@ void	ft_save_space_before(char *input)
 				i++;
 			}
 		}
-		i++;
+		else
+			i++;
 	}
 }
+
 
 void	ft_save_space_after(char **splited)
 {

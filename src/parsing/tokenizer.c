@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:25:59 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:40:21 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	ft_tokenize(t_list **token_list, char **splited, char **paths)
 		token = malloc(sizeof(t_list));
 		if (!token)
 			return ;
-		token->prompt = NULL;
 		token->token_type = ft_check_identity(splited[i], paths);
 		token->closed = 0;
 		if (ft_contain_quotes(splited[i]) == false && token->token_type == ARG)
@@ -109,17 +108,38 @@ void	ft_check_integrity(t_list *token_list, int list_size)
 
 void ft_checker_quotes(t_list *token_list)
 {
+	char *temp;
+	
 	while (token_list)
 	{
 		if (ft_is_litteral(token_list->token) == true && token_list->token_type == ARG)
-			token_list->token = ft_replace_litteral(token_list->token);
+		{
+			temp = token_list->token;
+			token_list->token = ft_replace_litteral(temp);
+			free(temp);
+		}
 		token_list = token_list->next_token;
 	}
+}
+
+void ft_free_split(char **split)
+{
+	int i;
+	i = 0;
+    if (!split)
+        return;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+    free(split);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	char    *input;
+	char	*temp;
 	int     size;
 	char    *new_input;
 	char    **splited;
@@ -129,18 +149,23 @@ int	main(int argc, char **argv, char **envp)
 	{
 		t_list  *token_list = NULL;
 		input = readline("[Minishell]$ ");
-		// input = "echo zsh$USER";
 		add_history(input);
 		if (strncmp(input, "kill", 4) == 0)
 		{
+			free(input);
 			ft_free_list(token_list);
 			return (0);
 		}
-		new_input = strdup(input);
+		new_input = ft_strdup(input);
 		ft_save_space_before(new_input);
-		new_input = ft_insert_space(new_input);
+		temp = new_input;
+		new_input = ft_insert_space(temp);
+		free(temp);
 		if (ft_validate_all_quotes(new_input) == false)
 		{
+			ft_free_list(token_list);
+			free(input);
+			free(new_input);
 			printf("Error : unclosed quotes\n");
 		}
 		else
@@ -153,6 +178,11 @@ int	main(int argc, char **argv, char **envp)
 		ft_check_integrity(token_list, size);
 		ft_checker_quotes(token_list);
 		ft_print_token_list(token_list);
+		if (splited)
+			ft_free_split(splited);
+		ft_free_split(paths);
+		free(new_input);
+		free(input);
 		ft_free_list(token_list);
 		}
 	}

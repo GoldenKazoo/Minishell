@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 19:31:46 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 17:22:47 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 18:00:50 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ int	ft_is_command(char **path, char *string)
 
 	checker = ft_get_path_cmd(path, string);
 	if (checker != NULL)
+	{
+		free(checker);
 		return (CMD);
+	}
+	free(checker);
 	return (0);
 }
 
