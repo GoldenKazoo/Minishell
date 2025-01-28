@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 14:10:19 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:25:59 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,17 @@ int	main(int argc, char **argv, char **envp)
 		// input = "echo zsh$USER";
 		add_history(input);
 		if (strncmp(input, "kill", 4) == 0)
+		{
+			ft_free_list(token_list);
 			return (0);
+		}
 		new_input = strdup(input);
 		ft_save_space_before(new_input);
 		new_input = ft_insert_space(new_input);
 		if (ft_validate_all_quotes(new_input) == false)
-		{}
+		{
+			printf("Error : unclosed quotes\n");
+		}
 		else
 		{
 		splited = ft_split(new_input, ' ');

@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:46:01 by zchagar           #+#    #+#             */
-/*   Updated: 2024/12/21 18:14:24 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 16:28:39 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ size_t	ft_count_space(char *prompt)
 
 	i = 0;
 	count = 0;
-	while (prompt[(i)] != '\0')
+	while (prompt[i] != '\0')
 	{
-		if (prompt[(i) + 1] && prompt[(i) - 1])
+		if (i > 0 && prompt[i + 1] != '\0')
 		{
 			ft_count_pipe_case(prompt, &count, &i);
 			ft_count_right_case(prompt, &count, &i);
@@ -62,3 +62,4 @@ size_t	ft_count_space(char *prompt)
 	}
 	return (count);
 }
+
