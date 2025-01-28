@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 17:38:01 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 14:10:19 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	ft_tokenize(t_list **token_list, char **splited, char **paths)
 		token->prompt = NULL;
 		token->token_type = ft_check_identity(splited[i], paths);
 		token->closed = 0;
+		if (ft_contain_quotes(splited[i]) == false && token->token_type == ARG)
+			splited[i] = ft_convert_into_double_quote(splited[i]);
 		token->token = splited[i];
 		token->litteral = ft_is_litteral(splited[i]);
 		token->next_token = NULL;
@@ -105,6 +107,15 @@ void	ft_check_integrity(t_list *token_list, int list_size)
 		}
 }
 
+void ft_checker_quotes(t_list *token_list)
+{
+	while (token_list)
+	{
+		if (ft_is_litteral(token_list->token) == true && token_list->token_type == ARG)
+			token_list->token = ft_replace_litteral(token_list->token);
+		token_list = token_list->next_token;
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -118,20 +129,27 @@ int	main(int argc, char **argv, char **envp)
 	{
 		t_list  *token_list = NULL;
 		input = readline("[Minishell]$ ");
+		// input = "echo zsh$USER";
 		add_history(input);
 		if (strncmp(input, "kill", 4) == 0)
 			return (0);
 		new_input = strdup(input);
 		ft_save_space_before(new_input);
 		new_input = ft_insert_space(new_input);
+		if (ft_validate_all_quotes(new_input) == false)
+		{}
+		else
+		{
 		splited = ft_split(new_input, ' ');
 		ft_save_space_after(splited);
 		paths = ft_path_split(envp);
 		size = ft_get_size_list(splited);
 		ft_tokenize(&token_list, splited, paths);
 		ft_check_integrity(token_list, size);
+		ft_checker_quotes(token_list);
 		ft_print_token_list(token_list);
 		ft_free_list(token_list);
+		}
 	}
 	return (0);
 }

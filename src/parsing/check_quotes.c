@@ -6,11 +6,46 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 11:03:32 by zak               #+#    #+#             */
-/*   Updated: 2025/01/24 17:20:46 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:32:04 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+
+bool	ft_contain_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+char *ft_convert_into_double_quote(char *str)
+{
+	int		i;
+	int		j;
+	char	*new_string;
+
+	i = 0;
+	j = 1;
+	new_string = malloc(strlen(str) + 3);
+	new_string[i] = '"';
+	new_string[strlen(str) + 1] = '"';
+	new_string[strlen(str) + 2] = '\0';
+	while (str[i])
+	{
+		new_string[j] = str[i];
+		i++;
+		j++; 
+	}
+	return (new_string);
+}
 
 bool	ft_check_quotes(char *str, char quote)
 {

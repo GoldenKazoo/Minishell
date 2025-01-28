@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:17:37 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 17:26:34 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 11:16:41 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	ft_print_token_list(t_list *token_list)
 {
 	while (token_list)
 	{
-		if (ft_is_litteral(token_list->token) == true)
-			token_list->token = ft_replace_litteral(token_list->token);
+		// if (ft_is_litteral(token_list->token) == true)
+		// 	token_list->token = ft_replace_litteral(token_list->token);
 		printf("%s : %i\n", token_list->token, token_list->token_type);
 		token_list = token_list->next_token;
 	}

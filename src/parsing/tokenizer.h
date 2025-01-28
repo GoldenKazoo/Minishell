@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:27:59 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 16:49:46 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 13:39:18 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int		ft_is_command(char **path, char *string);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_is_redirect_stdin(char *string);
 int		ft_is_redirect_stdout(char *string);
-int		ft_is_HEREDOC(char *string);
-int		ft_is_APPEND(char *string);
+int		ft_is_heredoc(char *string);
+int		ft_is_append(char *string);
 int		ft_check_identity(char *string, char **path);
 bool	ft_is_litteral(char *string);
 char	*ft_replace_litteral(char *string);
@@ -62,4 +62,7 @@ void ft_save_space_after(char **splited);
 int	ft_get_size_list(char **splited);
 void ft_print_token_list(t_list *token_list);
 void ft_free_list(t_list *token_list);
+bool	ft_contain_quotes(char *str);
+char *ft_convert_into_double_quote(char *str);
+bool	ft_validate_all_quotes(char *str);
 #endif

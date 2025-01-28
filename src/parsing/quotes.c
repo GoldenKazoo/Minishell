@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:18:05 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/24 17:33:50 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:47:24 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*ft_insert_for_litteral(char *string)
 		i++;
 		j++;
 	}
+	new_string[j] = '\0';
 	return (new_string);
 }
 
@@ -108,7 +109,7 @@ void	ft_save_space_before(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i] != '\0')
+	while (input[i])
 	{
 		if (input[i] == '"')
 		{
