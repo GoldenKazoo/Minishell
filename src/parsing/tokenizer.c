@@ -178,13 +178,15 @@ int	main(int argc, char **argv, char **envp)
 		ft_check_integrity(token_list, size);
 		ft_checker_quotes(token_list);
 		ft_print_token_list(token_list);
-		if (splited)
-			ft_free_split(splited);
-		ft_free_split(paths);
-		free(new_input);
-		free(input);
-		ft_free_list(token_list);
-		}
-	}
+	// 	if (splited)
+	// 		ft_free_split(splited);
+	// 	ft_free_split(paths);
+	// 	free(new_input);
+	// 	free(input);
+	// 	ft_free_list(token_list);
+	// 	}
+	// }
 	return (0);
+}
+	}
 }
