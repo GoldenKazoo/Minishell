@@ -6,7 +6,7 @@
 /*   By: vsougoum <vsougoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:19:24 by vsougoum          #+#    #+#             */
-/*   Updated: 2024/12/17 19:17:39 by vsougoum         ###   ########.fr       */
+/*   Updated: 2025/05/30 23:06:55 by vsougoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,21 @@ void	ft_putendl_fd(char *s, int fd);
 int		ft_putnbr_fd(int n, int fd);
 
 /* Fonctions bonus et structure de liste chainée */
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}	t_list;
+//typedef struct s_list
+//{
+//	void			*content;
+//	struct s_list	*next;
+//}	t_list;
 
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-int		ft_lstsize(t_list *lst);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	ft_lstclear(t_list **lst, void (*del)(void *));
-void	ft_lstiter(t_list *lst, void (*f)(void *));
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+//t_list	*ft_lstnew(void *content);
+//void	ft_lstadd_front(t_list **lst, t_list *new);
+//int		ft_lstsize(t_list *lst);
+//t_list	*ft_lstlast(t_list *lst);
+//void	ft_lstadd_back(t_list **lst, t_list *new);
+//void	ft_lstdelone(t_list *lst, void (*del)(void *));
+//void	ft_lstclear(t_list **lst, void (*del)(void *));
+//void	ft_lstiter(t_list *lst, void (*f)(void *));
+//t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /* Fonctions comprises dans d'autres projets (ft_printf & get_next_line)*/
 # ifndef BUFFER_SIZE

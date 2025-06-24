@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:46:01 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 16:28:39 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/05/20 10:04:20 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,3 @@ size_t	ft_count_space(char *prompt)
 	}
 	return (count);
 }
-

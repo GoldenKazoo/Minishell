@@ -1,25 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsougoum <vsougoum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/30 16:33:07 by vsougoum          #+#    #+#             */
-/*   Updated: 2024/06/01 11:29:50 by vsougoum         ###   ########.fr       */
+/*   Created: 2025/05/30 23:16:23 by vsougoum          #+#    #+#             */
+/*   Updated: 2025/05/30 23:20:28 by vsougoum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "env.h"
 
-t_list	*ft_lstnew(void *content)
+t_env *ft_lstnew(char	*str)
 {
-	t_list	*new;
+	t_env	*new;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
+	new = malloc(sizeof(t_env) * 1);
+	if (new == NULL)
 		return (NULL);
-	new->content = content;
+	new->row = str;
 	new->next = NULL;
 	return (new);
+}
+
+t_env	*ft_lstlast(t_env *lst)
+{
+	t_env	*last;
+
+	if (lst == NULL)
+		return (NULL);
+	last = lst;
+	while (last->next != NULL)
+		last = last->next;
+	return (last);
+}
+
+void	ft_lstadd_back(t_env **lst, t_env *new)
+{
+	t_env	*last;
+	
+	last = ft_lstlast(*lst);
+	if (last == NULL)
+		*lst = new;
+	else
+		last->next = new;
 }

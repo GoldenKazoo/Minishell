@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:52:20 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 18:40:21 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/06/25 01:13:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,43 @@
 #include <limits.h>
 #include "tokenizer.h"
 
+
 void	ft_tokenize(t_list **token_list, char **splited, char **paths)
 {
 	int		i;
 	t_list	*token;
-	t_list	*last_token;
+	t_list	*last;
 
 	i = 0;
 	while (splited[i])
 	{
-		token = malloc(sizeof(t_list));
-		if (!token)
-			return ;
-		token->token_type = ft_check_identity(splited[i], paths);
-		token->closed = 0;
-		if (ft_contain_quotes(splited[i]) == false && token->token_type == ARG)
-			splited[i] = ft_convert_into_double_quote(splited[i]);
-		token->token = splited[i];
-		token->litteral = ft_is_litteral(splited[i]);
-		token->next_token = NULL;
-		token->previous_token = NULL;
-		if (!(*token_list))
+		if (splited[i][0] != '\0')
 		{
-			*token_list = token;
+			token = malloc(sizeof(t_list));
+			if (!token)
+				return ;
+			token->token_type = ft_check_identity(splited[i], paths);
+			token->closed = 0;
+			if (ft_contain_quotes(splited[i]) == false
+				&& token->token_type == ARG)
+				splited[i] = ft_convert_into_double_quote(splited[i]);
+			token->token = splited[i];
+			token->litteral = ft_is_litteral(splited[i]);
+			token->next_token = NULL;
+			token->previous_token = NULL;
+			if (!(*token_list))
+				*token_list = token;
+			else
+			{
+				last = find_last(*token_list);
+				last->next_token = token;
+				token->previous_token = last;
+			}
 		}
-		else
-		{
-			last_token = find_last(*token_list);
-			last_token->next_token = token;
-			token->previous_token = last_token;
-		}
-		i++;
+		i++;                                  
 	}
 }
+
 
 int	ft_count_redir(t_list *token_list)
 {
@@ -88,7 +92,7 @@ void	ft_error_tokenizer(t_list *token_list, int size)
 		}
 	}
 }
-void	ft_check_integrity(t_list *token_list, int list_size)
+void	ft_check_integrity(t_list *token_list, __attribute__ ((unused)) int list_size)
 {
 	while (token_list)
 	{
@@ -110,13 +114,20 @@ void ft_checker_quotes(t_list *token_list)
 {
 	char *temp;
 	
+	if (token_list->token_type == ARG)
+{
+	printf("Before replace: %s\n", token_list->token);
+	temp = token_list->token;
+	token_list->token = ft_replace_litteral(temp);
+	printf("After replace: %s\n", token_list->token);
+}
+
 	while (token_list)
 	{
 		if (ft_is_litteral(token_list->token) == true && token_list->token_type == ARG)
 		{
 			temp = token_list->token;
 			token_list->token = ft_replace_litteral(temp);
-			free(temp);
 		}
 		token_list = token_list->next_token;
 	}
@@ -127,7 +138,7 @@ void ft_free_split(char **split)
 	int i;
 	i = 0;
     if (!split)
-        return;
+		return;
 	while (split[i])
 	{
 		free(split[i]);
@@ -136,55 +147,9 @@ void ft_free_split(char **split)
     free(split);
 }
 
-int	main(int argc, char **argv, char **envp)
+void free_and_reset(char *ptr)
 {
-	char    *input;
-	char	*temp;
-	int     size;
-	char    *new_input;
-	char    **splited;
-	char    **paths;
-
-	while (1)
-	{
-		t_list  *token_list = NULL;
-		input = readline("[Minishell]$ ");
-		add_history(input);
-		if (strncmp(input, "kill", 4) == 0)
-		{
-			free(input);
-			ft_free_list(token_list);
-			return (0);
-		}
-		new_input = ft_strdup(input);
-		ft_save_space_before(new_input);
-		temp = new_input;
-		new_input = ft_insert_space(temp);
-		free(temp);
-		if (ft_validate_all_quotes(new_input) == false)
-		{
-			ft_free_list(token_list);
-			free(input);
-			free(new_input);
-			printf("Error : unclosed quotes\n");
-		}
-		else
-		{
-		splited = ft_split(new_input, ' ');
-		ft_save_space_after(splited);
-		paths = ft_path_split(envp);
-		size = ft_get_size_list(splited);
-		ft_tokenize(&token_list, splited, paths);
-		ft_check_integrity(token_list, size);
-		ft_checker_quotes(token_list);
-		ft_print_token_list(token_list);
-		// if (splited)
-		// 	ft_free_split(splited);
-		ft_free_split(paths);
-		free(new_input);
-		free(input);
-		ft_free_list(token_list);
-		}
-	}
-	return (0);
+    if (ptr)
+        free(ptr);
 }
+

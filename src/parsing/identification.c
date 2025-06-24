@@ -39,7 +39,7 @@ int	ft_check_identity(char *string, char **path)
 		return (PIPE);
 	if (ft_is_redirect_stdin(string) == STDIN)
 		return (STDIN);
-	if (ft_is_redirect_stdin(string) == STDOUT)
+	if (ft_is_redirect_stdout(string) == STDOUT)
 		return (STDOUT);
 	if (ft_is_heredoc(string) == HEREDOC)
 		return (HEREDOC);

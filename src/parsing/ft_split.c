@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 10:39:00 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 18:20:38 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/05/20 11:22:16 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	ft_bzero(void *s, size_t n)
 		i++;
 	}
 }
+
 size_t	ft_strlen(const char *string)
 {
 	size_t	i;
@@ -86,6 +87,7 @@ size_t	ft_strlen(const char *string)
 	}
 	return (i);
 }
+
 void	*ft_calloc(size_t elementcount, size_t elementsize)
 {
 	void	*p;

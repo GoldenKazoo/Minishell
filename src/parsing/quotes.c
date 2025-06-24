@@ -3,20 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:18:05 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 18:37:38 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/06/25 01:14:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
+#include "minishell.h"
 
-bool	ft_is_litteral(char *string)
+static int	ft_intlen(int n)
 {
-	if (string[0] == '"')
-		return (true);
-	return (false);
+	int	len;
+
+	len = (n <= 0);
+	while (n)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*str;
+	int		len;
+	long	nb;
+
+	nb = n;
+	len = ft_intlen(n);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	str[len--] = '\0';
+	if (nb == 0)
+		str[0] = '0';
+	if (nb < 0)
+	{
+		str[0] = '-';
+		nb = -nb;
+	}
+	while (nb > 0)
+	{
+		str[len--] = '0' + (nb % 10);
+		nb /= 10;
+	}
+	return (str);
+}
+
+bool	ft_is_litteral(char *s)
+{
+	size_t	len;
+
+	len = strlen(s);
+	return (len >= 2 && s[0] == '"' && s[len - 1] == '"');
 }
 
 int	ft_count_dollar(char *string)
@@ -37,41 +78,39 @@ int	ft_count_dollar(char *string)
 
 bool	ft_valid_format(char c)
 {
-	if (c <= 'Z' && c >= 'A')
-		return (true);
-	if (c <= 'z' && c >= 'a')
-		return (true);
-	if (c <= '9' && c >= '0')
-		return (true);
-	if (c == '_')
+	if ((c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= '0' && c <= '9')
+		|| c == '_'
+		|| c == '?')
 		return (true);
 	return (false);
 }
 
-char	*ft_insert_for_litteral(char *string)
-{
-	int		i;
-	int		j;
-	char	*new_string;
 
-	new_string = NULL;
-	i = 1;
+char	*ft_insert_for_litteral(char *s)
+{
+	size_t	i;
+	size_t	j;
+	char	*out;
+
+	i = 0;
 	j = 0;
-	new_string = malloc(strlen(string) + ft_count_dollar(string) + 1);
-	while (string[i] && string[i] != '"')
+	out = malloc(strlen(s) + ft_count_dollar(s) + 1);
+	if (!out)
+		return (NULL);
+	while (s[i])
 	{
-		if (ft_valid_format(string[i]) == false && string[i] != '"')
+		if (s[i] != '"')
 		{
-			new_string[j] = '|';
-			j++;
+			if (!ft_valid_format(s[i]))
+				out[j++] = '|';
+			out[j++] = s[i];
 		}
-		if (string[i] != '"')
-			new_string[j] = string[i];
 		i++;
-		j++;
 	}
-	new_string[j] = '\0';
-	return (new_string);
+	out[j] = '\0';
+	return (out);
 }
 
 char	*ft_replace_litteral(char *string)
@@ -79,52 +118,68 @@ char	*ft_replace_litteral(char *string)
 	char	**split_str;
 	char	*new_string;
 	int		i;
-	int		j;
 
 	new_string = NULL;
 	i = 0;
-	j = 0;
+
 	string = ft_insert_for_litteral(string);
 	split_str = ft_split(string, '|');
 	while (split_str[i])
 	{
-		if (split_str[i][0] == '$' && ft_valid_format(split_str[i][1]))
+		if (split_str[i][0] == '$')
 		{
-			split_str[i] = getenv(++split_str[i]);
+			if (split_str[i][1] == '?')
+			{
+				free(split_str[i]);
+				split_str[i] = ft_itoa(g_last_exit_status);
+			}
+			else if (ft_valid_format(split_str[i][1]))
+			{
+				char *env_value = getenv(split_str[i] + 1);
+				free(split_str[i]);
+				split_str[i] = env_value ? ft_strdup(env_value) : ft_strdup("");
+			}
 		}
 		i++;
-		j = 0;
 	}
 	i = 0;
 	while (split_str[i])
 	{
+		char *tmp = new_string;
 		new_string = ft_strjoin(new_string, split_str[i]);
+		free(tmp);
 		i++;
 	}
+	if (!new_string)
+		new_string = ft_strdup("");
+	// ft_free_split(split_str);
 	return (new_string);
 }
+
 
 void	ft_save_space_before(char *input)
 {
 	int	i;
 
 	i = 0;
-	while (input[i] != '\0')
+	while (input[i])
 	{
 		if (input[i] == '"')
 		{
 			i++;
-			while (input[i] != '"' && input[i] != '\0')
+			while (input[i] && input[i] != '"')
 			{
 				if (input[i] == ' ')
 					input[i] = -42;
 				i++;
 			}
+			if (input[i] == '"')
+				i++;
 		}
 		else if (input[i] == '\'')
 		{
 			i++;
-			while (input[i] != '\'' && input[i] != '\0')
+			while (input[i] && input[i] != '\'')
 			{
 				if (input[i] == ' ')
 					input[i] = -42;
@@ -136,23 +191,21 @@ void	ft_save_space_before(char *input)
 	}
 }
 
-
 void	ft_save_space_after(char **splited)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	j = 0;
 	while (splited[i])
 	{
-		while (splited[i][j] != '\0')
+		j = 0;
+		while (splited[i][j])
 		{
 			if (splited[i][j] == -42)
 				splited[i][j] = ' ';
 			j++;
 		}
-		j = 0;
 		i++;
 	}
 }

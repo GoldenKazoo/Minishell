@@ -6,7 +6,7 @@
 /*   By: zchagar <zchagar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:17:37 by zchagar           #+#    #+#             */
-/*   Updated: 2025/01/28 18:03:19 by zchagar          ###   ########.fr       */
+/*   Updated: 2025/05/20 11:25:41 by zchagar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void ft_free_list(t_list *list)
 {
     while (list)
     {
+		// free(list->token);
         t_list *next = list->next_token;
         free(list);
         list = next;

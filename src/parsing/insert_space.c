@@ -15,104 +15,35 @@
 #include <string.h>
 #include "tokenizer.h"
 
-int	ft_pipe_case(char *prompt, char *new_prompt, int *index, int state)
-{
-	if (!prompt || !new_prompt || !index[0] || !index[1])
-		return (0);
-	if (prompt[index[1] + 1] == '|')
-	{
-		state = 1;
-		new_prompt[index[0]] = prompt[index[1]];
-		index[0]++;
-		new_prompt[index[0]] = ' ';
-		index[0]++;
-		new_prompt[index[0]] = '|';
-		index[0]++;
-		new_prompt[index[0]] = ' ';
-		(index[1])++;
-	}
-	return (state);
-}
-
-int	ft_right_redir_case(char *prompt, char *new_prompt, int *index, int state)
-{
-	if (!prompt || !new_prompt || !index[0] || !index[1])
-		return (0);
-	if (prompt[index[1] + 1] == '<')
-	{
-		state = 1;
-		new_prompt[index[0]++] = prompt[index[1]];
-		new_prompt[index[0]++] = ' ';
-		new_prompt[index[0]] = '<';
-		(index[1])++;
-		if (prompt[index[1] + 1] && prompt[index[1] + 1] == '<')
-		{
-			index[0]++;
-			new_prompt[index[0]++] = '<';
-			new_prompt[index[0]++] = ' ';
-			(index[1])++;
-		}
-		else
-		{
-			index[0]++;
-			new_prompt[index[0]] = ' ';
-		}
-	}
-	return (state);
-}
-
-int	ft_left_redir_case(char *prompt, char *new_prompt, int *index, int state)
-{
-	if (!prompt || !new_prompt || !index[0] || !index[1])
-		return (0);
-	if (prompt[index[1] + 1] == '>')
-	{
-		state = 1;
-		new_prompt[index[0]++] = prompt[index[1]];
-		new_prompt[index[0]++] = ' ';
-		new_prompt[index[0]] = '>';
-		(index[1])++;
-		if (prompt[index[1] + 1] && prompt[index[1] + 1] == '>')
-		{
-			index[0]++;
-			new_prompt[index[0]++] = '>';
-			new_prompt[index[0]++] = ' ';
-			(index[1])++;
-		}
-		else
-		{
-			index[0]++;
-			new_prompt[index[0]] = ' ';
-		}
-	}
-	return (state);
-}
-
 char	*ft_insert_space(char *prompt)
 {
-	int		index[2];
-	int		state;
-	char	*new_prompt;
+	size_t	len  = strlen(prompt) + ft_count_space(prompt) + 1;
+	char	*out = malloc(len);
+	size_t	i = 0, j = 0;
 
-	index[0] = 0;
-	index[1] = 0;
-	new_prompt = malloc(strlen(prompt) + ft_count_space(prompt) + 10);
-	while (prompt[index[1]] != '\0')
+	if (!out)
+		return (NULL);
+	while (prompt[i])
 	{
-		state = 0;
-		state = ft_pipe_case(prompt, new_prompt, index, state);
-		state = ft_right_redir_case(prompt, new_prompt, index, state);
-		state = ft_left_redir_case(prompt, new_prompt, index, state);
-		if (state == 0)
+		if (prompt[i] == '<' || prompt[i] == '>' || prompt[i] == '|')
 		{
-			new_prompt[index[0]] = prompt[index[1]];
+			if (j && out[j - 1] != ' ')
+				out[j++] = ' ';
+			out[j++] = prompt[i];
+			if ((prompt[i] == '>' || prompt[i] == '<') && prompt[i + 1] == prompt[i])
+				out[j++] = prompt[++i];      /* copie le 2ᵉ ‘>’ ou ‘<’ */
+			if (prompt[i + 1] && prompt[i + 1] != ' ')
+				out[j++] = ' ';
 		}
-		index[0]++;
-		index[1]++;
+		else
+			out[j++] = prompt[i];
+		i++;
 	}
-	new_prompt[index[0]] = '\0';
-	return (new_prompt);
+	out[j] = '\0';
+	return (out);
 }
+
+
 
 // int main()
 // {
