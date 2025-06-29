@@ -4,25 +4,32 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	sigint_handler(int signo)
+static void	handle_sigint(int signo)
 {
-	(void)signo;
+	g_signal = signo;
+	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
-	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-void	sigquit_handler(int signo)
+static void	handle_sigquit(int signo)
 {
-	(void)signo;
+	g_signal = signo;
 }
 
 void	setup_signals(void)
 {
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
-}
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
-//faire une var global pour gerr les signaux ?
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_handler = handle_sigint;
+	sa_int.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa_int, NULL);
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_handler = handle_sigquit;
+	sa_quit.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sa_quit, NULL);
+}
 
