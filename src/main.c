@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 10:09:40 by vsougoum          #+#    #+#             */
-/*   Updated: 2025/06/25 00:57:30 by marvin           ###   ########.fr       */
+/*   Updated: 2025/09/06 17:57:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,12 @@ int	main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char **argv
 		bool		should_execute = true;
 		setup_signals();
 		input = readline("[Minishell]$ ");
+		if (input[0] == '\0')
+		{
+    		free_and_reset(input);
+    		continue;
+		}
+
 		if (!input)
 		{
 			printf("exit\n");
