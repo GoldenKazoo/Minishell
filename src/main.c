@@ -88,16 +88,15 @@ int	main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char **argv
 		bool		should_execute = true;
 		setup_signals();
 		input = readline("[Minishell]$ ");
-		if (input[0] == '\0')
-		{
-    		free_and_reset(input);
-    		continue;
-		}
-
 		if (!input)
 		{
 			printf("exit\n");
 			break; /* Ctrl-D : on quitte si pas d’input */
+		}
+		if (input[0] == '\0')
+		{
+    		free_and_reset(input);
+    		continue;
 		}
 		add_history(input);
 

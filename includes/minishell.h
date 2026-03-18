@@ -13,12 +13,13 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdbool.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include "../libft/libft.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include "../libft/libft.h"
 
 extern int g_last_exit_status;
 
